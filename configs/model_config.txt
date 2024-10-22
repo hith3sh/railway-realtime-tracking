@@ -1,0 +1,89 @@
+################################################################################
+# Copyright (c) 2019-2021, NVIDIA CORPORATION. All rights reserved.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+################################################################################
+
+# Following properties are mandatory when engine files are not specified:
+#   int8-calib-file(Only in INT8), model-file-format
+#   Caffemodel mandatory properties: model-file, proto-file, output-blob-names
+#   UFF: uff-file, input-dims, uff-input-blob-name, output-blob-names
+#   ONNX: onnx-file
+#
+# Mandatory properties for detectors:
+#   num-detected-classes
+#
+# Optional properties for detectors:
+#   cluster-mode(Default=Group Rectangles), interval(Primary mode only, Default=0)
+#   custom-lib-path
+#   parse-bbox-func-name
+#
+# Mandatory properties for classifiers:
+#   classifier-threshold, is-classifier
+#
+# Optional properties for classifiers:
+#   classifier-async-mode(Secondary mode only, Default=false)
+#
+# Optional properties in secondary mode:
+#   operate-on-gie-id(Default=0), operate-on-class-ids(Defaults to all classes),
+#   input-object-min-width, input-object-min-height, input-object-max-width,
+#   input-object-max-height
+#
+# Following properties are always recommended:
+#   batch-size(Default=1)
+#
+# Other optional properties:
+#   net-scale-factor(Default=1), network-mode(Default=0 i.e FP32),
+#   model-color-format(Default=0 i.e. RGB) model-engine-file, labelfile-path,
+#   mean-file, gie-unique-id(Default=0), offsets, process-mode (Default=1 i.e. primary),
+#   custom-lib-path, network-mode(Default=0 i.e FP32)
+#
+# The values in the config file are overridden by values set through GObject
+# properties.
+
+[property]
+gpu-id=0
+net-scale-factor=0.0039215697906911373
+model-color-format=0
+onnx-file=../../../rtsp_restreamer/yolov8s/yolov8s.onnx
+model-engine-file=../../../rtsp_restreamer/yolov8s/yolov8s_fp16.engine
+#int8-calib-file=../../../rtsp_restreamer/yolov8s/calib.table
+labelfile-path=../../../rtsp_restreamer/yolov8s/labels.txt
+batch-size=1
+network-mode=2
+num-detected-classes=80
+interval=1
+gie-unique-id=1
+process-mode=1
+network-type=0
+cluster-mode=2
+filter-out-class-ids=4;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22;23;24;25;26;27;28;29;30;31;32;33;34;35;36;37;38;39;40;41;42;43;44;45;46;47;48;49;50;51;52;53;54;55;56;57;58;59;60;61;62;63;64;65;66;67;68;69;70;71;72;73;74;75;76;77;78;79
+maintain-aspect-ratio=1
+symmetric-padding=1
+#workspace-size=2000
+parse-bbox-func-name=NvDsInferParseYolo
+#parse-bbox-func-name=NvDsInferParseYoloCuda
+custom-lib-path=../../../rtsp_restreamer/yolov8s/libnvdsinfer_custom_impl_Yolo.so
+engine-create-func-name=NvDsInferYoloCudaEngineGet
+
+[class-attrs-all]
+nms-iou-threshold=0.45
+pre-cluster-threshold=0.5
+post-cluster-threshold=0.5
+topk=300
